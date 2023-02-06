@@ -62,10 +62,10 @@ function askQuestions() {
               }
             ])
             .then(function (answers) {
-             con.query("INSERT INTO department (names) VALUES('" + answers.name + "')");
-             askQuestions();
+              con.query("INSERT INTO department (names) VALUES('" + answers.name + "')");
+              askQuestions();
             });
-          
+
           break;
 
         case "Add a Role":
@@ -88,9 +88,9 @@ function askQuestions() {
               }
             ])
             .then(function (answers) {
-              con.query("INSERT INTO role (title, salary, department_id) VALUES('" + answers.title + answers.salary + answers.department_id + "')");
+              con.query("INSERT INTO role (title, salary, department_id) VALUES('" + answers.title + "', '" + answers.salary + "', " + answers.department_id + ")");
               askQuestions();
-             });
+            });
           break;
 
         case "Add an Employee":
@@ -118,13 +118,33 @@ function askQuestions() {
               },
             ])
             .then(function (answers) {
-              con.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES('" + answers.first_name + answers.last_name + answers.role_id + answers.manager_id + "')");
+              var sql = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES('" + answers.first_name + "', '" + answers.last_name + "', " + answers.role_id + ", " + answers.manager_id + ")";
+              con.query(sql);
               askQuestions();
-             });
+            });
           break;
 
         case "Update an Employee Role":
-
+          var employeeArray = [];
+          con.query("SELECT * FROM employee", function (err, result, fields) {
+            if (err) throw err;
+            for (var i = 0; i < result.length; i++)
+              employeeArray.push(result[i].last_name);
+              console.log(result[0]);
+          });
+          
+          inquirer
+            .prompt([
+              {
+                type: 'list',
+                message: 'Which employee would you like to update?',
+                choices: employeeArray,
+                name: 'updateEmployee'
+              },
+            ])
+            .then(function (answers){
+              console.log(answers);
+            })
           askQuestions();
           break;
       }
