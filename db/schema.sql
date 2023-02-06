@@ -4,7 +4,7 @@ CREATE DATABASE employees_db;
 USE employees_db;
 
 CREATE TABLE department (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   names VARCHAR(30),
   PRIMARY KEY (id)
 );
@@ -17,7 +17,7 @@ INSERT INTO department (id, names)
 VALUES (3, "Sales");
 
 CREATE TABLE role (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30),
   salary DECIMAL,
   department_id INT,
