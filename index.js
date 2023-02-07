@@ -123,29 +123,24 @@ function askQuestions() {
               askQuestions();
             });
           break;
-
         case "Update an Employee Role":
-          var employeeArray = [];
-          con.query("SELECT * FROM employee", function (err, result, fields) {
-            if (err) throw err;
-            for (var i = 0; i < result.length; i++)
-              employeeArray.push(result[i].last_name);
-              console.log(result[0]);
-          });
-          
           inquirer
             .prompt([
               {
-                type: 'list',
-                message: 'Which employee would you like to update?',
-                choices: employeeArray,
+                input: 'input',
+                message: 'Which employee would you like to update (enter id)?',
                 name: 'updateEmployee'
               },
+              {
+                input: 'input',
+                message: 'What will be their new role (enter role id)?',
+                name: 'updateId'
+              },
             ])
-            .then(function (answers){
-              console.log(answers);
+            .then(function (answers) {
+              con.query("UPDATE employee SET role_id = " + answers.updateId + " WHERE id = " + answers.updateEmployee);
+              askQuestions();
             })
-          askQuestions();
           break;
       }
     });
